@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://localhost:8000/socket");
+        var heartbeat_msg = "{{ code }}", heartbeat_interval = null, missed_heartbeats = 0, times = 0;
+        ws.onopen = function() {
+            if (heartbeat_interval === null) {
+                missed_heartbeats = 0;
+                heartbeat_interval = setInterval(function () {
+                    try {
+                        missed_heartbeats++;
+                        if (missed_heartbeats >= 3)
+                            throw new Error("Too many missed heartbeats.");
+                        ws.send(heartbeat_msg);
+                    } catch (e) {
+                        clearInterval(heartbeat_interval);
+                        heartbeat_interval = null;
+                        console.warn("Closing connection. Reason: " + e.message);
+                        ws.close();
+                    }
+                }, 5000);
+            }
+        };
+        ws.onmessage = function(event) {
+            times++;
+            console.log("got it" + times);
+            if (event.data === heartbeat_msg) {
+                // reset the counter for missed heartbeats
+                missed_heartbeats = 0;
+                setHref();
+            }
+        };
+        function setHref(){
+            location.href = "http://127.0.0.1:8000/";
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <img src="/static/qrpic/{{ pic_name }}"/>
+    </div>
+</body>
+</html>

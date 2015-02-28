@@ -1,8 +1,8 @@
 import asyncio
 from aiopg.sa import create_engine
 
-from blog.application import modules
-from blog.application import utils
+from application import modules
+from application import utils
 
 db_engine = create_engine(user='postgres',
                           database='test',

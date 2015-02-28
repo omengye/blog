@@ -8,6 +8,7 @@ def create_tables(engine):
         yield from conn.execute('DROP TABLE IF EXISTS articles')
         yield from conn.execute('DROP TABLE IF EXISTS authors')
         yield from conn.execute('DROP TABLE IF EXISTS tags')
+        yield from conn.execute('DROP TABLE IF EXISTS login')
         yield from conn.execute('''CREATE TABLE articles (
                                     id VARCHAR(32) PRIMARY KEY,
                                     author_id VARCHAR(32),
@@ -25,6 +26,10 @@ def create_tables(engine):
                                     id VARCHAR(32) PRIMARY KEY,
                                     tag_name VARCHAR(512),
                                     article_id VARCHAR(32))''')
+        yield from conn.execute('''CREATE TABLE login (
+                                    id VARCHAR(32) PRIMARY KEY,
+                                    uid VARCHAR(32),
+                                    login_time VARCHAR(19))''')
 
 
 @asyncio.coroutine

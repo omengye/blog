@@ -28,6 +28,13 @@ tags = sa.Table(
     sa.Column("article_id", sa.String(32), nullable=True)
 )
 
+login = sa.Table(
+    "login", metadata,
+    sa.Column("id", sa.String(32), primary_key=True),
+    sa.Column("uid", sa.String(32), nullable=True),
+    sa.Column("login_time", sa.String(19), nullable=True)
+)
+
 
 class Articles(object):
     def __init__(self, uuid, author_id, title, markdown, html, publish_time, update_time):
@@ -53,3 +60,10 @@ class Tags(object):
         self.id = uuid
         self.tag_name = tag_name
         self.article_id = article_id
+
+
+class Login(object):
+    def __init__(self, uuid, user_id, login_time):
+        self.id = uuid
+        self.uid = user_id
+        self.login_time = login_time

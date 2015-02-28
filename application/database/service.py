@@ -1,6 +1,6 @@
-from blog.application import modules
-from blog.application import utils
-from blog.application.database import db
+from application import modules
+from application import utils
+from application.database import db
 
 
 def delete_by_ids(article_ids):

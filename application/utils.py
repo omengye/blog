@@ -1,4 +1,5 @@
 import datetime
+import time
 import uuid
 import re
 import hashlib
@@ -23,7 +24,9 @@ class Utils(object):
 
     @staticmethod
     def md5_pass(x):
-        return hashlib.md5(str(x))
+        m = hashlib.md5()
+        m.update(str(x).encode('UTF-8'))
+        return m.hexdigest()
 
     @staticmethod
     def not_empty(x):
@@ -31,3 +34,10 @@ class Utils(object):
             return False
         else:
             return True
+
+    @staticmethod
+    def epoch_before_sec(x):
+        t = datetime.datetime.now()
+        before = t + datetime.timedelta(seconds=x)
+        e_time = time.mktime(before.timetuple())  # 把时间转换成Epoch秒数
+        return e_time
