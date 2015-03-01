@@ -12,8 +12,9 @@
                 heartbeat_interval = setInterval(function () {
                     try {
                         missed_heartbeats++;
-                        if (missed_heartbeats >= 3)
+                        if (missed_heartbeats >= 3) {
                             throw new Error("Too many missed heartbeats.");
+                        }
                         ws.send(heartbeat_msg);
                     } catch (e) {
                         clearInterval(heartbeat_interval);
@@ -26,11 +27,13 @@
         };
         ws.onmessage = function(event) {
             times++;
-            console.log("got it" + times);
-            if (event.data === heartbeat_msg) {
+            console.log("got it " + times +" times");
+            if (event.data == heartbeat_msg) {
                 // reset the counter for missed heartbeats
                 missed_heartbeats = 0;
-                setHref();
+                if (times >= 10){
+                    ws.close()
+                }
             }
         };
         function setHref(){

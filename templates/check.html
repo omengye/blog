@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>
+        check in by phone
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="/static/css/login.css" rel="stylesheet">
+    <script src="/static/js/jquery-2.1.3.min.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("button").click(function(){
+                var post_email = $("#email").val();
+                var post_pass = $("#passwd").val();
+                if (post_email == "" || post_pass == "") {
+                    alert("error")
+                }
+                else {
+                    var value = md5(post_pass);
+                    var url = "{{request.uri}}";
+                    $.post(url, {
+                        md5_pass: value,
+                        email: post_email
+                    }, function(data) {
+                        if (data == "200") {
+                            window.location.href = '/'
+                        }
+                        else {
+                            alert("login error")
+                        }
+                    });
+                    return true;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <form name="theForm" class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="email" class="sr-only">Email address</label>
+        <input id="email" type="text" class="form-control">
+        <label for="passwd" class="sr-only">Password</label>
+        <input id="passwd" type="password" class="form-control">
+        <button class="btn btn-lg btn-primary btn-block">Sign in</button>
+    </form>
+
+</div>
+</body>
+</html>
