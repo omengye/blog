@@ -44,15 +44,25 @@ class CheckLoginHandler(tornado.web.RequestHandler):
     def post(self, par):
         email = self.get_argument("email", None)
         passwd = self.get_argument("md5_pass", None)
-        print(par)
         if Utils.not_empty(par) and Utils.no_special_symbol(par) and email is not None and Utils.no_special_symbol(
                 email) and passwd is not None and Utils.no_special_symbol(passwd):
-            sql = sa.select([modules.authors.c.author, modules.authors.c.passwd]).select_from(modules.authors).where(
-                modules.authors.c.email == str(email))
-            find = db.run_with_return(sql)
+            find = []
+            try:
+                print(email)
+                print(passwd)
+                sql = sa.select([modules.authors.c.author, modules.authors.c.passwd]).select_from(
+                    modules.authors).where(modules.authors.c.email == str(email))
+                get_return = db.run_with_return(sql)
+                print(get_return)
+                find.extend(get_return)
+                print(find)
+            except IOError:
+                print("login check error")
             if find and find[0][1] == passwd:
                 print(email, passwd)
                 self.finish("200")  # 这里有一个坑,render和redirect不起作用,需要js callback
+            else:
+                self.finish("500")
 
 
 class WebSocketHandler(Auth):

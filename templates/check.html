@@ -12,8 +12,9 @@
     <script src="/static/js/md5.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-            $("button").click(function(){
+        $(document).ready(function () {
+            $("#postForm").click(function (e) {
+                e.preventDefault()
                 var post_email = $("#email").val();
                 var post_pass = $("#passwd").val();
                 if (post_email == "" || post_pass == "") {
@@ -21,20 +22,23 @@
                 }
                 else {
                     var value = md5(post_pass);
-                    var url = "{{request.uri}}";
-                    $.post(url, {
-                        md5_pass: value,
-                        email: post_email
-                    }, function(data) {
-                        if (data == "200") {
-                            location.href=url + "/success"
-                        }
-                        else {
-                            alert("login error")
+                    var post_url = "{{request.uri}}";
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr(post_url),
+                        data: {md5_pass: value, email: post_email},
+                        success: function (data) {
+                            if (data == "200") {
+                                location.href = post_url + "/success"
+                            }
+                            else {
+                                alert("login error");
+                            }
                         }
                     });
                 }
             });
+            return false;
         });
     </script>
 </head>
@@ -48,7 +52,7 @@
         <input id="email" type="text" class="form-control">
         <label for="passwd" class="sr-only">Password</label>
         <input id="passwd" type="password" class="form-control">
-        <button class="btn btn-lg btn-primary btn-block">Sign in</button>
+        <button id="postForm" class="btn btn-lg btn-primary btn-block">Sign in</button>
     </form>
 
 </div>
