@@ -27,19 +27,19 @@
                         email: post_email
                     }, function(data) {
                         if (data == "200") {
-                            window.location.href = '/'
+                            location.href=url + "/success"
                         }
                         else {
                             alert("login error")
                         }
                     });
-                    return true;
                 }
             });
         });
     </script>
 </head>
 <body>
+
 <div class="container">
 
     <form name="theForm" class="form-signin">

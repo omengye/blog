@@ -63,8 +63,7 @@ def run_with_return(sql):
 
         with (yield from engine) as conn:
             res = yield from conn.execute(sql)
-            for row in res:
-                result.append(row)
+            result.extend(res)
 
     loop_run(go_with_return)
     return result

@@ -3,8 +3,11 @@ import tornado.websocket
 import tornado.ioloop
 import qrcode
 import os.path
+import sqlalchemy as sa
 
 from application.utils import Utils
+from application import modules
+from application.database import db
 
 
 class Auth(tornado.websocket.WebSocketHandler):
@@ -25,6 +28,11 @@ class CheckPageHandler(Auth):
         self.render("ws.html", code=self.generate_code(), pic_name=self.gen_pic_name())
 
 
+class SuccessLoginHandler(tornado.web.RequestHandler):
+    def get(self, *args, **kwargs):
+        self.render("success.html")
+
+
 class CheckLoginHandler(tornado.web.RequestHandler):
     def get(self, par):
         par = str(par)
@@ -34,12 +42,17 @@ class CheckLoginHandler(tornado.web.RequestHandler):
             self.redirect("http://127.0.0.1:8000/")
 
     def post(self, par):
-        print(par)
         email = self.get_argument("email", None)
         passwd = self.get_argument("md5_pass", None)
-        print(email, passwd)
-        self.finish("200")
-
+        print(par)
+        if Utils.not_empty(par) and Utils.no_special_symbol(par) and email is not None and Utils.no_special_symbol(
+                email) and passwd is not None and Utils.no_special_symbol(passwd):
+            sql = sa.select([modules.authors.c.author, modules.authors.c.passwd]).select_from(modules.authors).where(
+                modules.authors.c.email == str(email))
+            find = db.run_with_return(sql)
+            if find and find[0][1] == passwd:
+                print(email, passwd)
+                self.finish("200")  # 这里有一个坑,render和redirect不起作用,需要js callback
 
 
 class WebSocketHandler(Auth):
