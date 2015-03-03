@@ -29,7 +29,8 @@
                         data: {md5_pass: value, email: post_email},
                         success: function (data) {
                             if (data == "200") {
-                                location.href = post_url + "/success"
+                                $("form").hide();
+                                $("#success-signin").show();
                             }
                             else {
                                 alert("login error");
@@ -40,11 +41,18 @@
             });
             return false;
         });
+        window.onload = function() {
+            $("#success-signin").hide();
+        }
     </script>
 </head>
 <body>
 
 <div class="container">
+    <div id="success-signin">
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+        <span class="glyphicon-class">login success</span>
+    </div>
 
     <form name="theForm" class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>

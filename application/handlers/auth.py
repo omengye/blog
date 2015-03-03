@@ -28,11 +28,6 @@ class CheckPageHandler(Auth):
         self.render("ws.html", code=self.generate_code(), pic_name=self.gen_pic_name())
 
 
-class SuccessLoginHandler(tornado.web.RequestHandler):
-    def get(self, *args, **kwargs):
-        self.render("success.html")
-
-
 class CheckLoginHandler(tornado.web.RequestHandler):
     def get(self, par):
         par = str(par)
