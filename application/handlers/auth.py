@@ -81,7 +81,7 @@ class WebSocketHandler(Auth):
     def on_message(self, message):
         print(str(message))
         if len(message) == 32:
-            self.write_message(message)
+            self.write_message("9c04900648284994bef5801372dfc799")
             print("send message")
 
     def on_close(self):

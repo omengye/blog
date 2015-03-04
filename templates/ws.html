@@ -3,6 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script src="/static/js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript">
         var ws = new WebSocket("ws://localhost:8000/socket");
         var heartbeat_msg = "{{ code }}", heartbeat_interval = null, missed_heartbeats = 0, times = 0;
@@ -34,11 +35,12 @@
                 if (times >= 60){
                     ws.close()
                 }
+            }else if (event.data.length == 32){
+                location.href = "http://127.0.0.1:8000/?" + "uid=" + event.data + "&token=" + heartbeat_msg;
+            }else {
+                ws.close()
             }
         };
-        function setHref(){
-            location.href = "http://127.0.0.1:8000/";
-        }
     </script>
 </head>
 <body>
