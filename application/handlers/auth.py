@@ -41,26 +41,31 @@ class CheckLoginHandler(tornado.web.RequestHandler):
         passwd = self.get_argument("md5_pass", None)
         if Utils.not_empty(par) and Utils.no_special_symbol(par) and email is not None and Utils.no_special_symbol(
                 email) and passwd is not None and Utils.no_special_symbol(passwd):
+            exist = []
             find = []
             try:
-                sql = sa.select([modules.authors.c.id, modules.authors.c.author, modules.authors.c.passwd]).select_from(
-                    modules.authors).where(modules.authors.c.email == str(email))
+                sql = sa.select("1").select_from(modules.login).where(modules.login.c.id == str(par))
                 get_return = db.run_with_return(sql)
-                find.extend(get_return)
+                exist.extend(get_return)
             except IOError:
-                print("login check error")
-                self.finish("500")
-            if find and find[0][2] == passwd:
-                uid = find[0][0]
-                sql = modules.login.insert().values(id=par, uid=uid, login_time=Utils.time_now())
+                print("login tooken find error")
+            if not find:
                 try:
-                    db.run(sql)
-                    self.finish("200")  # 这里有一个坑,render和redirect不起作用,需要js callback
+                    sql = sa.select(
+                        [modules.authors.c.id, modules.authors.c.author, modules.authors.c.passwd]).select_from(
+                        modules.authors).where(modules.authors.c.email == str(email))
+                    get_return = db.run_with_return(sql)
+                    find.extend(get_return)
                 except IOError:
-                    print("insert login log error")
-                    self.finish("500")
-            else:
-                self.finish("500")
+                    print("login check error")
+                if find and find[0][2] == passwd:
+                    uid = find[0][0]
+                    sql = modules.login.insert().values(id=par, uid=uid, login_time=Utils.time_now())
+                    try:
+                        db.run(sql)
+                        self.finish("200")  # 这里有一个坑,render和redirect不起作用,需要js callback
+                    except IOError:
+                        print("insert login log error")
 
 
 class WebSocketHandler(Auth):
@@ -75,7 +80,7 @@ class WebSocketHandler(Auth):
             box_size=6,
             border=1,
         )
-        qr.add_data("http://192.168.1.106:8000/check/" + self.generate_code())
+        qr.add_data("http://192.168.191.1:8000/check/" + self.generate_code())
         qr.make(fit=True)
         img = qr.make_image()
         pic_path = os.path.join(os.path.dirname(__file__), "../../static/qrpic/") + self.gen_pic_name()
