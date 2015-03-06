@@ -44,8 +44,8 @@ class Utils(object):
 
     @staticmethod
     def interval_sec(x):
-        def time_split(tooken_time):
-            [date_year, date_time] = tooken_time.split("T")
+        def time_split(token_time):
+            [date_year, date_time] = token_time.split("T")
             [year, month, day] = date_year.split("-")
             [hour, minu, sec] = date_time.split(":")
             unix_time = datetime.datetime(year=int(year), month=int(month), day=int(day), hour=int(hour),

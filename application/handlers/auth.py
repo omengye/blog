@@ -49,7 +49,7 @@ class CheckLoginHandler(tornado.web.RequestHandler):
                 get_return = db.run_with_return(sql)
                 exist.extend(get_return)
             except IOError:
-                print("login tooken find error")
+                print("login token find error")
             if not find:
                 try:
                     sql = sa.select(
