@@ -41,3 +41,20 @@ class Utils(object):
         before = t + datetime.timedelta(seconds=x)
         e_time = time.mktime(before.timetuple())  # 把时间转换成Epoch秒数
         return e_time
+
+    @staticmethod
+    def interval_sec(x):
+        def time_split(tooken_time):
+            [date_year, date_time] = tooken_time.split("T")
+            [year, month, day] = date_year.split("-")
+            [hour, minu, sec] = date_time.split(":")
+            unix_time = datetime.datetime(year=int(year), month=int(month), day=int(day), hour=int(hour),
+                                          minute=int(minu), second=int(sec))
+            return time.mktime(unix_time.timetuple())
+
+        unix_time_now = Utils.epoch_before_sec(0)
+        unix_time_tooken = time_split(x)
+
+        return unix_time_now - unix_time_tooken
+
+

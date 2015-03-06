@@ -9,4 +9,5 @@ class HomeHandler(tornado.web.RequestHandler):
         if uid is None or token is None:
             self.render("index.html")
         else:
+
             print(uid, token)

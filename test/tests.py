@@ -2,8 +2,10 @@
 
 from sqlalchemy import create_engine
 import sqlalchemy as sa
+import datetime
 
 from application.database import db
+from application.utils import Utils
 
 metadata = sa.MetaData()
 
@@ -46,8 +48,22 @@ engine = create_engine(
 #     for raw in res:
 #         print(raw)
 
-sql = sa.select("1").select_from(login).where(
-    login.c.id == "18c97c3598dd4dfaa5968efb888d6a3c")
+# sql = sa.select("1").select_from(login).where(
+#     login.c.id == "18c97c3598dd4dfaa5968efb888d6a3c")
+#
+# get_return = db.run_with_return(sql)
+# print(get_return)
 
-get_return = db.run_with_return(sql)
-print(get_return)
+time = "2015-03-05T00:21:40"
+time1 = "2015-03-05T00:22:40"
+
+[year, time] = time.split("T")
+print([year, time])
+
+t = datetime.datetime.now()
+before = t + datetime.timedelta(seconds=0)
+delay_time = before.strftime("%Y-%m-%dT%H:%M:%S")
+print(delay_time)
+
+result = Utils.interval_sec("2015-03-06T01:01:00")
+print(result)

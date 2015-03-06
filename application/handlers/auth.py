@@ -2,8 +2,8 @@ import tornado.web
 import tornado.websocket
 import tornado.ioloop
 import qrcode
-import os.path
 import sqlalchemy as sa
+import os
 
 from application.utils import Utils
 from application import modules
@@ -13,6 +13,7 @@ from application.database import db
 class Auth(tornado.websocket.WebSocketHandler):
     code = Utils.generate_uuid()
     qrpic_time = Utils.epoch_before_sec(0)
+    pic_path = None
 
     @staticmethod
     def generate_code():
@@ -80,11 +81,12 @@ class WebSocketHandler(Auth):
             box_size=6,
             border=1,
         )
-        qr.add_data("http://192.168.191.1:8000/check/" + self.generate_code())
+        qr.add_data("http://192.168.1.106:8000/check/" + self.generate_code())
         qr.make(fit=True)
         img = qr.make_image()
         pic_path = os.path.join(os.path.dirname(__file__), "../../static/qrpic/") + self.gen_pic_name()
         img.save(pic_path)
+        self.pic_path = pic_path
 
     def on_message(self, message):
         print(str(message))
@@ -98,7 +100,7 @@ class WebSocketHandler(Auth):
                 print(find)
             except IOError:
                 print("loop select author error")
-                self.on_close()
+                self.close()
             if find:
                 uid = find[0][0]
                 self.write_message(uid)
@@ -110,3 +112,5 @@ class WebSocketHandler(Auth):
     def on_close(self):
         self.close()
         print("close")
+        os.remove(self.pic_path)
+        print("delete qr pic")
