@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 <!--
-thanks to editor.md. URL: https://pandao.github.io/editor.md/
+thanks to editor.md & bootstrap-tagsinput.
+URL: https://pandao.github.io/editor.md/
+URL: http://timschlechter.github.io/bootstrap-tagsinput/examples/
 -->
 <head lang="en">
     <meta charset="UTF-8">
-    <title>blog index</title>
+    <title>editor</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href='/static/css/editormd.css' rel='stylesheet'>
     <link href="/static/css/editor.css" rel="stylesheet">
-
+    <link href="/static/css/bootstrap-tagsinput.css" rel="stylesheet">
 
 </head>
 <body>
@@ -25,13 +27,19 @@ thanks to editor.md. URL: https://pandao.github.io/editor.md/
     </div>
 
     <div style="text-align: center">
-        <form method="post" action="{{request.uri}}}">
+        <form method="post" action="{{request.uri}}">
+            <div class="form-group" style="margin-top: 1rem">
+                <input type="text" name="title" id="inputTitle" class="form-control" placeholder="Enter Title">
+            </div>
             <div id="test-editormd">
                     <textarea style="display:none;">
-                        #test
+
                     </textarea>
             </div>
-            <div style="width:100%; margin: 10px auto">
+            <div class="form-group" style="margin-top: 1rem">
+                <input type="text" name="tags" data-role="tagsinput" class="form-control" placeholder="Enter Tags separated with Comma" />
+            </div>
+            <div style="width:100%; margin: 1rem auto">
                 <button class="btn btn-primary" type="submit"/>Submit</button>
             </div>
         </form>
@@ -43,6 +51,7 @@ thanks to editor.md. URL: https://pandao.github.io/editor.md/
 </div>
 <script src="/static/js/jquery-2.1.3.min.js"></script>
 <script src="/static/js/editormd.js"></script>
+<script src="/static/js/bootstrap-tagsinput.min.js"></script>
 <script type="text/javascript">
     $(function () {
         var testEditor = editormd("test-editormd", {

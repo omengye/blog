@@ -29,6 +29,7 @@ class HomeHandler(tornado.web.RequestHandler):
                 login_time = login_time[0][0]
                 print(author, login_time)
                 self.set_secure_cookie(name="author", value=author, expires_days=1)
+                self.render("index.html")
 
 
 class EditorHandler(tornado.web.RequestHandler):
@@ -36,6 +37,8 @@ class EditorHandler(tornado.web.RequestHandler):
         self.render("editor.html")
 
     def post(self):
-        html = self.get_argument("test-editormd-html-code")
-        code = self.get_argument("test-editormd-markdown-doc")
+        html = self.get_argument("test-editormd-html-code", None)
+        code = self.get_argument("test-editormd-markdown-doc", None)
+        title = self.get_argument("title", None)
+        tags = self.get_argument("tags", None)
         print(html)
