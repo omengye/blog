@@ -6,6 +6,7 @@ import datetime
 
 from application.database import db
 from application.utils import Utils
+from application import modules
 
 metadata = sa.MetaData()
 
@@ -28,7 +29,6 @@ tags = sa.Table(
     sa.Column("article_id", sa.String(32), nullable=True)
 )
 
-
 login = sa.Table(
     "login", metadata,
     sa.Column("id", sa.String(32), primary_key=True),
@@ -44,9 +44,9 @@ engine = create_engine(
 # authors).where(authors.c.email == "test@root.com")
 #
 # with engine.connect() as conn:
-#     res = conn.execute(sql)
-#     for raw in res:
-#         print(raw)
+# res = conn.execute(sql)
+# for raw in res:
+# print(raw)
 
 # sql = sa.select("1").select_from(login).where(
 #     login.c.id == "18c97c3598dd4dfaa5968efb888d6a3c")
@@ -54,16 +54,24 @@ engine = create_engine(
 # get_return = db.run_with_return(sql)
 # print(get_return)
 
-time = "2015-03-05T00:21:40"
-time1 = "2015-03-05T00:22:40"
+# time = "2015-03-05T00:21:40"
+# time1 = "2015-03-05T00:22:40"
+#
+# [year, time] = time.split("T")
+# print([year, time])
+#
+# t = datetime.datetime.now()
+# before = t + datetime.timedelta(seconds=0)
+# delay_time = before.strftime("%Y-%m-%dT%H:%M:%S")
+# print(delay_time)
+#
+# result = Utils.interval_sec("2015-03-06T01:01:00")
+# print(result)
 
-[year, time] = time.split("T")
-print([year, time])
+article = modules.Articles(uuid=Utils.generate_uuid(), author_id="098f6bcd4621d373cade4e832627b4f6", title="defef",
+                           markdown="", html="", publish_time=Utils.time_now(), update_time=None)
 
-t = datetime.datetime.now()
-before = t + datetime.timedelta(seconds=0)
-delay_time = before.strftime("%Y-%m-%dT%H:%M:%S")
-print(delay_time)
-
-result = Utils.interval_sec("2015-03-06T01:01:00")
-print(result)
+sql = modules.articles.insert().values(id=article.id, author_id=article.author_id,
+                                       title=article.title, markdown=article.markdown, html=article.html,
+                                       publish_time=article.publish_time)
+db.run(sql)
