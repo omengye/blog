@@ -35,7 +35,22 @@ class HomeHandler(tornado.web.RequestHandler):
 
 class EditorHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("editor.html")
+        article_id = self.get_argument("article_id", None)
+        if article_id is None:
+            self.render("editor.html")
+        elif Utils.no_special_symbol(article_id) or len(article_id) != 32:
+            self.write("404")
+        else:
+            get_return = []
+            sql = sa.select("*").select_from(modules.articles).where(modules.articles.c.id == str(article_id))
+            try:
+                get_return = db.run_with_return(sql)
+            except IOError:
+                print("error")
+            if get_return:
+                self.render("editor.html")
+            else:
+                self.write("404")
 
     def post(self):
         html = self.get_argument("test-editormd-html-code", "")
