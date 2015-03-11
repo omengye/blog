@@ -68,10 +68,13 @@ engine = create_engine(
 # result = Utils.interval_sec("2015-03-06T01:01:00")
 # print(result)
 
-article = modules.Articles(uuid=Utils.generate_uuid(), author_id="098f6bcd4621d373cade4e832627b4f6", title="defef",
-                           markdown="", html="", publish_time=Utils.time_now(), update_time=None)
+# article = modules.Articles(uuid=Utils.generate_uuid(), author_id="098f6bcd4621d373cade4e832627b4f6", title="defef",
+#                            markdown="", html="", publish_time=Utils.time_now(), update_time=None)
+#
+# sql = modules.articles.insert().values(id=article.id, author_id=article.author_id,
+#                                        title=article.title, markdown=article.markdown, html=article.html,
+#                                        publish_time=article.publish_time)
+# db.run(sql)
 
-sql = modules.articles.insert().values(id=article.id, author_id=article.author_id,
-                                       title=article.title, markdown=article.markdown, html=article.html,
-                                       publish_time=article.publish_time)
-db.run(sql)
+# sql = sa.select(modules.tags.c.tag_name).select_from(modules.tags).where(modules.tags.c.article_id == )
+

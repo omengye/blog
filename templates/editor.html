@@ -29,15 +29,15 @@ URL: http://timschlechter.github.io/bootstrap-tagsinput/examples/
     <div style="text-align: center">
         <form method="post" action="{{request.uri}}">
             <div class="form-group" style="margin-top: 1rem">
-                <input type="text" name="title" id="inputTitle" class="form-control" placeholder="Enter Title" required="true">
+                <input type="text" name="title" id="inputTitle" value="{{article.title if article else ''}}" class="form-control" placeholder="Enter Title" required="true">
             </div>
             <div id="test-editormd">
                     <textarea style="display:none;">
-
+                        {{article.markdown if article else ''}}
                     </textarea>
             </div>
             <div class="form-group" style="margin-top: 1rem">
-                <input type="text" name="tags" data-role="tagsinput" class="form-control" placeholder="Enter Tags separated with Comma" />
+                <input type="text" name="tags" data-role="tagsinput" value="{{article.title if article else ''}}" class="form-control" placeholder="Enter Tags separated with Comma" />
             </div>
             <div style="width:100%; margin: 1rem auto">
                 <button class="btn btn-primary" type="submit"/>Submit</button>
