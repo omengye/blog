@@ -76,5 +76,7 @@ engine = create_engine(
 #                                        publish_time=article.publish_time)
 # db.run(sql)
 
-# sql = sa.select(modules.tags.c.tag_name).select_from(modules.tags).where(modules.tags.c.article_id == )
+sql = sa.select([modules.tags.c.tag_name]).select_from(modules.tags).where(modules.tags.c.article_id == "1eb0668e4f3c42c68d6c01adc4cb2a50")
 
+get_return = db.run_with_return(sql)
+print(get_return)

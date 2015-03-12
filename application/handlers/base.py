@@ -37,7 +37,7 @@ class EditorHandler(tornado.web.RequestHandler):
     def get(self):
         article_id = self.get_argument("article_id", None)
         article = None
-        tags = None
+        tags = ""
         if article_id is None:
             self.render("editor.html", article=article, tags=tags)
         elif Utils.no_special_symbol(article_id) is False or len(article_id) != 32:
@@ -48,13 +48,22 @@ class EditorHandler(tornado.web.RequestHandler):
             try:
                 get_return = db.run_with_return(sql)
             except IOError:
-                print("error")
+                print("get article error")
             if get_return:
                 article = modules.Articles(uuid=get_return[0][0], author_id=get_return[0][1], title=get_return[0][2],
                                            markdown=get_return[0][3], html=get_return[0][4],
                                            publish_time=get_return[0][5], update_time=get_return[0][6])
-                tags_sql = sa.select()
-                self.render("editor.html", article=article)
+                tags_sql = sa.select([modules.tags.c.tag_name]).select_from(modules.tags).where(
+                    modules.tags.c.article_id == article.id)
+                get_tags = None
+                try:
+                    get_tags = db.run_with_return(tags_sql)
+                except IOError:
+                    print("get tags error")
+                if get_tags:
+                    for tag in get_tags:
+                        tags = tags + tag[0] + ","
+                    self.render("editor.html", article=article, tags=tags)
             else:
                 self.write("404")
 
@@ -90,9 +99,4 @@ class EditorHandler(tornado.web.RequestHandler):
 
         if article is not None:
             service.save_or_update(article, tag_list)
-
-
-
-
-
 

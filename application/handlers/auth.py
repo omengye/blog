@@ -81,7 +81,7 @@ class WebSocketHandler(Auth):
             box_size=6,
             border=1,
         )
-        qr.add_data("http://192.168.1.106:8000/check/" + self.generate_code())
+        qr.add_data("http://192.168.1.108:8000/check/" + self.generate_code())
         qr.make(fit=True)
         img = qr.make_image()
         pic_path = os.path.join(os.path.dirname(__file__), "../../static/qrpic/") + self.gen_pic_name()
