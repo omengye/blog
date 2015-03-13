@@ -20,19 +20,14 @@
     </div>
 
     <div class="article">
+        {% for article in articles %}
         <div class="article-item">
-            <span class="post-date article-date">January 10, 2015</span>
-            <a href="/2015/01/10/recent-projects/" class="article-title">
-                Recent projects
+            <span class="post-date article-date">{{article.publish_time}}</span>
+            <a href="/id/{{article.id}}" class="article-title">
+                {{article.title}}
             </a>
         </div>
-
-        <div class="article-item">
-            <span class="post-date article-date">January 10, 2015</span>
-            <a href="/2015/01/10/recent-projects/" class="article-title">
-                Recent projects
-            </a>
-        </div>
+        {% end %}
     </div>
 
     <footer class="footer">

@@ -11,8 +11,20 @@ class HomeHandler(tornado.web.RequestHandler):
     def get(self):
         uid = self.get_argument("uid", None)
         token = self.get_argument("token", None)
+
+        sql = sa.select([modules.articles.c.id, modules.articles.c.title, modules.articles.c.publish_time]).select_from(
+            modules.articles).order_by(modules.articles.c.publish_time.desc())
+
+        list_article = db.run_with_return(sql)
+
+        articles = []
+        for article in list_article:
+            loop = modules.Articles(uuid=article[0], author_id=None, title=article[1], markdown=None, html=None,
+                                    publish_time=article[2], update_time=None)
+            articles.append(loop)
+
         if uid is None or token is None or len(uid) != 32 or len(token) != 32:
-            self.render("index.html")
+            self.render("index.html", articles=articles)
         else:
             sql = sa.select([modules.login.c.login_time]).select_from(modules.login).where(
                 modules.login.c.id == str(token))
@@ -30,7 +42,7 @@ class HomeHandler(tornado.web.RequestHandler):
                 print(author, login_time)
                 author_uid = author + "." + uid
                 self.set_secure_cookie(name="author", value=author_uid, expires_days=1)
-                self.render("index.html")
+                self.render("index.html", articles=articles)
 
 
 class EditorHandler(tornado.web.RequestHandler):

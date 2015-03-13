@@ -49,7 +49,7 @@ engine = create_engine(
 # print(raw)
 
 # sql = sa.select("1").select_from(login).where(
-#     login.c.id == "18c97c3598dd4dfaa5968efb888d6a3c")
+# login.c.id == "18c97c3598dd4dfaa5968efb888d6a3c")
 #
 # get_return = db.run_with_return(sql)
 # print(get_return)
@@ -69,14 +69,27 @@ engine = create_engine(
 # print(result)
 
 # article = modules.Articles(uuid=Utils.generate_uuid(), author_id="098f6bcd4621d373cade4e832627b4f6", title="defef",
-#                            markdown="", html="", publish_time=Utils.time_now(), update_time=None)
+# markdown="", html="", publish_time=Utils.time_now(), update_time=None)
 #
 # sql = modules.articles.insert().values(id=article.id, author_id=article.author_id,
-#                                        title=article.title, markdown=article.markdown, html=article.html,
+# title=article.title, markdown=article.markdown, html=article.html,
 #                                        publish_time=article.publish_time)
 # db.run(sql)
 
-sql = sa.select([modules.tags.c.tag_name]).select_from(modules.tags).where(modules.tags.c.article_id == "1eb0668e4f3c42c68d6c01adc4cb2a50")
+# sql = sa.select([modules.tags.c.tag_name]).select_from(modules.tags).where(
+#     modules.tags.c.article_id == "1eb0668e4f3c42c68d6c01adc4cb2a50")
+#
+# get_return = db.run_with_return(sql)
+# print(get_return)
 
-get_return = db.run_with_return(sql)
-print(get_return)
+sql = sa.select([modules.articles.c.id, modules.articles.c.title, modules.articles.c.publish_time]).select_from(
+    modules.articles).order_by(modules.articles.c.publish_time.desc())
+
+get_returns = db.run_with_return(sql)
+
+returns = []
+for get_return in get_returns:
+    article = {"id": get_return[0], "title": get_return[1], "article": get_return[2]}
+    returns.append(article)
+
+print(returns[0]['id'])
