@@ -1,32 +1,12 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     padding-top: 20px;
     padding-bottom: 20px;
-}
-
-.header {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-
-.header {
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.header h3 {
-    padding-bottom: 19px;
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 40px;
-}
-
-@media (min-width: 768px) {
-    .container {
-        max-width: 730px;
-    }
-}
-
-.container-narrow > hr {
-    margin: 30px 0;
+    margin-bottom: 60px;
 }
 
 .article {
@@ -54,32 +34,30 @@ body {
 .article-date {
     margin-top: 1rem;
     margin-bottom: 0;
-}
-
-@media (min-width: 34rem) {
-    .article-item {
-        margin-bottom: .5rem;
-    }
-
-    .article-date {
-        float: right;
-        margin-left: 1rem;
-        margin-right: 2rem;
-    }
-}
-
-.post-date {
     display: block;
     font: 400 14px/1.1 "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
     color: #ccc;
 }
 
-.text-muted {
-    margin: 20px 0;
+.article-title {
+    margin-left: 5px;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
-.contact {
-    margin-top: 10px;
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar-custom {
+    background-color: #ffffff;
+    border: transparent;
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
 }
 
 .footer {
@@ -89,10 +67,8 @@ body {
     height: 60px;
 }
 
-.footer > .container {
-    background-color: #f5f5f5;
+.container .text-muted {
+    /*margin: 20px 0;*/
+    margin-left: 20px;
 }
 
-.footer a:hover, .article a:focus {
-    color: #092832;
-}
